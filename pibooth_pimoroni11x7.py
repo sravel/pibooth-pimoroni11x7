@@ -41,70 +41,61 @@ def pibooth_configure(cfg):
 @pibooth.hookimpl
 def pibooth_startup(app, cfg):
     """Create the PiboothPimoroni11x7 instance."""
-    app.pimoroni_11x7 = PiboothPimoroni11x7(activate=cfg.getboolean('PIMORONI11x7', 'activate'), brightness=cfg.getfloat('PIMORONI11x7', 'brightness'))
-    if app.pimoroni_11x7.get_disable():
-        LOGGER.info("delette %s" % app.pimoroni_11x7.get_disable())
-        del app.pimoroni_11x7
-
+    app.pimoroni_11x7 = PiboothPimoroni11x7(config=cfg)
+    
 ###########
 # WAIT
 ##########
+
 @pibooth.hookimpl
 def state_wait_enter(app, cfg):
-    """
-    Reset wait view message.
-    """
     if not hasattr(app, 'pimoroni_11x7'):
-        app.pimoroni_11x7 = PiboothPimoroni11x7(activate=cfg.getboolean('PIMORONI11x7', 'activate'))
-        if app.pimoroni_11x7.get_disable():
-            del (app.pimoroni_11x7)
-    elif cfg.getboolean('PIMORONI11x7', 'activate'):
-        # Auto scroll using a thread
-        app.pimoroni_11x7.clear_and_write(message=cfg.get('PIMORONI11x7', 'wait_message'),brightness=cfg.getfloat('PIMORONI11x7', 'brightness'))
+        app.pimoroni_11x7 = PiboothPimoroni11x7(config=cfg)
+    else:
+        app.pimoroni_11x7.config = cfg
+        app.pimoroni_11x7.clear_and_write(message=cfg.get('PIMORONI11x7', 'wait_message'))
 
 @pibooth.hookimpl
 def state_wait_do(app, cfg):
     """
     Display wait view message.
     """
-    if hasattr(app, 'pimoroni_11x7') and cfg.getboolean('PIMORONI11x7', 'activate'):
-        # Auto scroll using a thread
-        # app.pimoroni_11x7.wait_scroll(interval=0.05)
-        app.pimoroni_11x7.draw(smile_list)
-    elif not cfg.getboolean('PIMORONI11x7', 'activate'):
-        app.pimoroni_11x7.clear()
+    if not hasattr(app, 'pimoroni_11x7'):
+        app.pimoroni_11x7 = PiboothPimoroni11x7(config=cfg)
+    else:
+        app.pimoroni_11x7.config = cfg
+        app.pimoroni_11x7.wait_scroll(interval=0.05)
+
 
 ###########
 # CHOOSE
 ##########
 @pibooth.hookimpl
 def state_choose_enter(app, cfg):
-    if cfg.getboolean('PIMORONI11x7', 'activate'):
-        app.pimoroni_11x7.clear_and_write(message=get_translated_text('choose'))
+    app.pimoroni_11x7.config = cfg
+    app.pimoroni_11x7.clear_and_write(message=get_translated_text('choose'))
 
 @pibooth.hookimpl
 def state_choose_do(app, cfg):
-    if hasattr(app, 'pimoroni_11x7') and cfg.getboolean('PIMORONI11x7', 'activate'):
-        # Auto scroll using a thread
-        app.pimoroni_11x7.wait_scroll(interval=0.05)
+    app.pimoroni_11x7.config = cfg
+    app.pimoroni_11x7.wait_scroll(interval=0.05)
 
 ###########
 # CHOSEN
 ##########
 @pibooth.hookimpl
 def state_chosen_enter(app, cfg):
-    if hasattr(app, 'pimoroni_11x7') and cfg.getboolean('PIMORONI11x7', 'activate'):
-        app.pimoroni_11x7.clear_and_write(message=get_translated_text('chosen'))
-        # Auto scroll using a thread
-        app.pimoroni_11x7.wait_scroll(interval=0.05)
+    app.pimoroni_11x7.config = cfg
+    app.pimoroni_11x7.clear_and_write(message="GO")
+    app.pimoroni_11x7.wait_scroll(interval=0.05)
 
 ###########
 # PREVIEW
 ##########
 @pibooth.hookimpl
-def state_preview_do(app, cfg):
-    pygame.event.pump()  # Before blocking actions
-    app.pimoroni_11x7.preview_countdown(cfg.getint('WINDOW', 'preview_delay'))
+def state_preview_enter(app, cfg):
+    app.pimoroni_11x7.config = cfg
+    app.pimoroni_11x7.preview_countdown()
 
 ###########
 # CAPTURE
@@ -112,15 +103,22 @@ def state_preview_do(app, cfg):
 @pibooth.hookimpl
 def state_capture_enter(app, cfg):
     """Ready to take a capture."""
-    if hasattr(app, 'pimoroni_11x7') and cfg.getboolean('PIMORONI11x7', 'activate'):
-        app.pimoroni_11x7.flash()
+    app.pimoroni_11x7.flash()
 
 
 @pibooth.hookimpl
 def state_capture_exit(app, cfg):
     """A capture has been taken."""
-    if hasattr(app, 'pimoroni_11x7') and cfg.getboolean('PIMORONI11x7', 'activate'):
-        app.pimoroni_11x7.clear_and_write(message=get_translated_text('smile'))
+    app.pimoroni_11x7.clear_and_write(message=get_translated_text('smile'))
+
+###########
+# processing
+##########
+@pibooth.hookimpl
+def state_processing_enter(app, cfg):
+    """
+    """
+    app.pimoroni_11x7.draw(smile_list)
 
 ###########
 # CLEANUP
@@ -129,14 +127,10 @@ def state_capture_exit(app, cfg):
 def pibooth_cleanup(app):
     if hasattr(app, 'pimoroni_11x7'):
         app.pimoroni_11x7.clear()
-        # app.pimoroni_11x7.display.cancel()
+        app.pimoroni_11x7.show()
 
 
-# @pibooth.hookimpl
-# def state_processing_exit(app, cfg):
-#     """
-#     Generate the QR Code and store it in the application.
-#     """
+
 #
 #
 #
@@ -157,63 +151,64 @@ DISPLAY_HEIGHT = height = 7
 
 class PiboothPimoroni11x7(Matrix11x7):
 
-    def __init__(self, activate=True, brightness=0.3):
-        """Initialize GoogleUpload instance"""
-        self.activate = activate
-        self.__DISABLE = False
-        self.display = None
-        self.brightness = brightness
+    def __init__(self, config=None):
+        """Initialize PiboothPimoroni11x7 instance"""
+        
+        self.config = config
+        self.activate = self.config.getboolean('PIMORONI11x7', 'activate')
+        self._DISABLE = False
+        self.count = None
+        self.message = self.config.get('PIMORONI11x7', 'wait_message')
+
         try:
             super().__init__()
         except ImportError as e:
-            self.__DISABLE = True
+            self._DISABLE = True
             LOGGER.warning("System not support 'Pimoroni11x7' this plugins is disable")
-        if self.activate and not self.__DISABLE:
-            # Avoid retina-searage!
-            self.set_brightness(self.brightness)
-            # Set the font
-            self.set_font(font3x5)
+        if self.activate and not self._DISABLE:
             LOGGER.info("Plugin 'Pimoroni11x7' is enable")
+            self.set_font(font3x5)
+            self.set_brightness(self.get_brightness())
         elif not self.activate:
             LOGGER.info("Plugin 'Pimoroni11x7' is disable")
+    
+    def check_activate(self):
+        if self.config.getboolean('PIMORONI11x7', 'activate') and not self._DISABLE:
+            return True
+        else:
+            self.clear()
+            self.show()
+            return False
+
+    def get_brightness(self):
+        return self.config.getfloat('PIMORONI11x7', 'brightness')
+        
 
     def get_disable(self):
         """to remove plugin from pibooth if not able"""
-        return self.__DISABLE
+        return self._DISABLE
 
-    def clear_and_write(self, message, brightness=0.3, activate=True):
+    def clear_and_write(self, message):
         """Clear buffer and add new message
         :param message: message to display on buffer"""
-        self.activate = activate
-        self.brightness = brightness
-        if self.activate and not self.__DISABLE:
-            self.clear()  # Clear the display and reset scrolling to (0, 0)
-            self.set_brightness(self.brightness)
+        
+        if self.check_activate():
+            self.clear()  # Clear the display buffer and reset scrolling to (0, 0)
+            self.show()   # apply to led
+            self.set_brightness(self.get_brightness())
             formatted_text = str(message).replace('"', '') + "   "
             self.write_string(formatted_text, font=font5x7)  # Write out your message
 
     def wait_scroll(self, interval):
-        # Show the buffer
-        self.show()
-        # Scroll the buffer content
-        self.scroll()
+        self.show()          # Show the buffer
+        self.scroll()        # Scroll the buffer content
         sleep(interval)
 
-    def auto_scroll(self, interval=1):
-        """Autoscroll with a thread.
-        Automatically show and scroll the buffer according to the interval value.
-        :param interval: Amount of seconds (or fractions thereof), not zero
-        """
-        LOGGER.debug("interval is %s", interval)
-        # Start a loop thread
-        # self.display = threading.Thread(group=None, target=self.wait_scroll, name="display", args=(interval),
-        self.display = threading.Timer(interval, function=self.wait_scroll, args=[interval], kwargs=None)
-        self.display.start()
-
     def draw(self, item):
-        self.set_brightness(0.3)
-        if self.activate and not self.__DISABLE:
+        self.set_brightness(self.get_brightness())
+        if self.check_activate():
             self.clear()  # Clear the display and reset scrolling to (0, 0)
+            self.show()   # apply to led
             for x, listy in enumerate(item):
                 for y, state in enumerate(listy):
                     self.pixel(y, x, state)
@@ -222,30 +217,28 @@ class PiboothPimoroni11x7(Matrix11x7):
     def flash(self):
         """Simulate flash with all light on"""
         self.set_brightness(1)
-        if self.activate and not self.__DISABLE:
+        if self.count:
+            self.count.cancel()
+        if self.check_activate():
             self.clear()  # Clear the display and reset scrolling to (0, 0)
             for x in range(0, 11):
                 for y in range(0, 7):
                     self.pixel(x, y, 1)
             self.show()
-
-    def preview_countdown(self, timeout):
-        """Show a countdown of `timeout` seconds on the preview.
-        Returns when the countdown is finished."""
-        timeout = int(timeout)
-        if timeout < 1:
-            raise ValueError("Start time shall be greater than 0")
-        first_loop = True
-        timer = PoolingTimer(timeout)
-        remaining = int(timer.remaining() + 1)
-        if first_loop:
-            timer.start()  # Because first preview capture is longer than others
-            first_loop = False
-        str_count = "%s".format(remaining)
-        self.clear
+ 
+    def run_count(self, preview_delay, countdown):
+        sleep(countdown-preview_delay)
+        str_count = str(preview_delay)
+        self.clear()
         self.write_string(str_count, font=font5x7)  # Write out your message
-        # Start a timer thread
-        threading.Timer(1, self.preview_countdown, [remaining]).start()
-        # Show the buffer
         self.show()
-        pygame.event.pump()
+        
+
+    def preview_countdown(self):
+        """Show a countdown of `timeout` seconds on the preview."""
+        preview_delay = self.config.getint('WINDOW', 'preview_delay')
+        countdown = preview_delay
+        while preview_delay != 0:
+            threading.Timer(0, self.run_count, [preview_delay, countdown]).start()
+            preview_delay -= 1
+
