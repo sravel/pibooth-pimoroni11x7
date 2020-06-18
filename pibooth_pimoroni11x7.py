@@ -125,7 +125,7 @@ def state_processing_enter(app, cfg):
 ##########
 @pibooth.hookimpl
 def pibooth_cleanup(app):
-    if hasattr(app, 'pimoroni_11x7'):
+    if hasattr(app, 'pimoroni_11x7') and not app.pimoroni_11x7._DISABLE:
         app.pimoroni_11x7.clear()
         app.pimoroni_11x7.show()
 
@@ -175,23 +175,20 @@ class PiboothPimoroni11x7(Matrix11x7):
     def check_activate(self):
         if self.config.getboolean('PIMORONI11x7', 'activate') and not self._DISABLE:
             return True
+        elif self._DISABLE:
+            return False
         else:
+            LOGGER.info("coucou")
             self.clear()
             self.show()
             return False
 
     def get_brightness(self):
         return self.config.getfloat('PIMORONI11x7', 'brightness')
-        
-
-    def get_disable(self):
-        """to remove plugin from pibooth if not able"""
-        return self._DISABLE
 
     def clear_and_write(self, message):
         """Clear buffer and add new message
         :param message: message to display on buffer"""
-        
         if self.check_activate():
             self.clear()  # Clear the display buffer and reset scrolling to (0, 0)
             self.show()   # apply to led
@@ -200,13 +197,14 @@ class PiboothPimoroni11x7(Matrix11x7):
             self.write_string(formatted_text, font=font5x7)  # Write out your message
 
     def wait_scroll(self, interval):
-        self.show()          # Show the buffer
-        self.scroll()        # Scroll the buffer content
-        sleep(interval)
+        if self.check_activate():
+            self.show()          # Show the buffer
+            self.scroll()        # Scroll the buffer content
+            sleep(interval)
 
     def draw(self, item):
-        self.set_brightness(self.get_brightness())
         if self.check_activate():
+            self.set_brightness(self.get_brightness())
             self.clear()  # Clear the display and reset scrolling to (0, 0)
             self.show()   # apply to led
             for x, listy in enumerate(item):
@@ -216,15 +214,16 @@ class PiboothPimoroni11x7(Matrix11x7):
 
     def flash(self):
         """Simulate flash with all light on"""
-        self.set_brightness(1)
-        if self.count:
-            self.count.cancel()
         if self.check_activate():
-            self.clear()  # Clear the display and reset scrolling to (0, 0)
-            for x in range(0, 11):
-                for y in range(0, 7):
-                    self.pixel(x, y, 1)
-            self.show()
+            self.set_brightness(1)
+            if self.count:
+                self.count.cancel()
+            if self.check_activate():
+                self.clear()  # Clear the display and reset scrolling to (0, 0)
+                for x in range(0, 11):
+                    for y in range(0, 7):
+                        self.pixel(x, y, 1)
+                self.show()
  
     def run_count(self, preview_delay, countdown):
         sleep(countdown-preview_delay)
@@ -236,9 +235,11 @@ class PiboothPimoroni11x7(Matrix11x7):
 
     def preview_countdown(self):
         """Show a countdown of `timeout` seconds on the preview."""
-        preview_delay = self.config.getint('WINDOW', 'preview_delay')
-        countdown = preview_delay
-        while preview_delay != 0:
-            threading.Timer(0, self.run_count, [preview_delay, countdown]).start()
-            preview_delay -= 1
+        if self.check_activate():
+            preview_delay = self.config.getint('WINDOW', 'preview_delay')
+            countdown = preview_delay
+            while preview_delay != 0:
+                threading.Timer(0, self.run_count, [preview_delay, countdown]).start()
+                preview_delay -= 1
+
 
