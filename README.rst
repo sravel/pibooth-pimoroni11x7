@@ -7,7 +7,7 @@ pibooth-pimoroni11x7
 ``pibooth-pimoroni11x7`` is a plugin for the `pibooth <https://github.com/pibooth/pibooth>`_
 application.
 
-Pibooth plugin to use Pimoroni led 11x7 `Pimoroni led 11x7  <https://shop.pimoroni.com/products/11x7-led-matrix-breakout>`_
+Pibooth plugin to use `Pimoroni led 11x7  <https://shop.pimoroni.com/products/11x7-led-matrix-breakout>`_
 
 
 Install
@@ -15,7 +15,8 @@ Install
 
 ::
 
-    $ pip3 install pibooth-pimoroni11x7
+    # not working yet, plugin in development
+    pip3 install pibooth-pimoroni11x7
 
 
 Configuration
@@ -29,6 +30,9 @@ configuration):
     [PIMORONI11x7]
     # Enable plugin
     activate = True
+    
+    # Message brightness
+    brightness = 0.3
     
     # Message to display on wait state
     wait_message = hello from pibooth
