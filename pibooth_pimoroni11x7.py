@@ -11,30 +11,31 @@ __version__ = "1.0.0"
 ###########################################################################
 # Grid buffer
 ###########################################################################
-smile_blink_grid = [  [0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0],
-                      [0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0],
-                      [0,0,1,0,1,0,1,0,1,0,0,0,0,1,0,1,0,0,0,1,0,0],
-                      [0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0],
-                      [0,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,1,1,0,1,0,0],
-                      [0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0],
-                      [0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0]]
+smile_blink_grid = [[0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                    [0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0],
+                    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+                    [0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0],
+                    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0]]
 
-heart_grid = [  [0,0,1,1,0,0,0,1,1,0,0],
-                [0,1,1,1,1,0,1,1,1,1,0],
-                [0,1,1,1,1,1,1,1,1,1,0],
-                [0,0,1,1,1,1,1,1,1,0,0],
-                [0,0,0,1,1,1,1,1,0,0,0],
-                [0,0,0,0,1,1,1,0,0,0,0],
-                [0,0,0,0,0,1,0,0,0,0,0]]
+heart_grid = [[0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+              [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+              [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+              [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+              [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+              [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]]
 
 print_blink_grid = [
-                [0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                [0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
-                [0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0],
-                [0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0],
-                [0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,1,1,1,1,0,1,0],
-                [0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0],
-                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0]]
+        [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]]
+
 
 ###########################################################################
 # HOOK pibooth
@@ -48,24 +49,27 @@ def pibooth_configure(cfg):
                    "Enable pimoroni", ['True', 'False'])
     cfg.add_option('PIMORONI11x7', 'brightness', 0.3,
                    "Message brightness",
-                   "Message brightness", [str(x / 10.0 )for x in range(0, 11, 1)])
+                   "Message brightness", [str(x / 10.0) for x in range(0, 11, 1)])
     cfg.add_option('PIMORONI11x7', 'wait_message', "hello from Pibooth",
                    "Message to display on wait state",
                    "Wait message", "")
 
-#--- Startup  ---------------------------------------------------------------
+
+# --- Startup  ---------------------------------------------------------------
 @pibooth.hookimpl
 def pibooth_startup(app, cfg):
     """Create the PiboothPimoroni11x7 instance.
     """
     app.pimoroni_11x7 = PiboothPimoroni11x7(config=cfg)
-    
-#--- Wait State ---------------------------------------------------------------
+
+
+# --- Wait State ---------------------------------------------------------------
 @pibooth.hookimpl
 def state_wait_enter(app, cfg):
     """Write message to buffer.
     """
     app.pimoroni_11x7.clear_and_write(message=cfg.get('PIMORONI11x7', 'wait_message'))
+
 
 @pibooth.hookimpl
 def state_wait_do(app, cfg):
@@ -73,12 +77,14 @@ def state_wait_do(app, cfg):
     """
     app.pimoroni_11x7.scroll_display(interval=0.08)
 
-#--- Choose State -------------------------------------------------------------
+
+# --- Choose State -------------------------------------------------------------
 @pibooth.hookimpl
 def state_choose_enter(app, cfg):
     """Write translated text of choose message to buffer.
     """
     app.pimoroni_11x7.clear_and_write(message=get_translated_text('choose'))
+
 
 @pibooth.hookimpl
 def state_choose_do(app, cfg):
@@ -86,22 +92,25 @@ def state_choose_do(app, cfg):
     """
     app.pimoroni_11x7.scroll_display(interval=0.05)
 
-#--- Chosen State -------------------------------------------------------------
+
+# --- Chosen State -------------------------------------------------------------
 @pibooth.hookimpl
-def state_chosen_enter(app, cfg):    
+def state_chosen_enter(app, cfg):
     """Write and display "GO" message.
     """
     app.pimoroni_11x7.clear_and_write(message="GO")
     app.pimoroni_11x7.scroll_display(interval=0)
 
-#--- Preview State ------------------------------------------------------------
+
+# --- Preview State ------------------------------------------------------------
 @pibooth.hookimpl
 def state_preview_enter(app, cfg):
     """call threading to display countdown.
     """
     app.pimoroni_11x7.preview_countdown()
 
-#--- Capture State ------------------------------------------------------------
+
+# --- Capture State ------------------------------------------------------------
 @pibooth.hookimpl
 def state_capture_enter(app, cfg):
     """If Flash is enable, use all led on, else write 0
@@ -112,45 +121,52 @@ def state_capture_enter(app, cfg):
         app.pimoroni_11x7.clear_and_write(message="0")
         app.pimoroni_11x7.scroll_display(interval=0)
 
+
 @pibooth.hookimpl
 def state_capture_exit(app, cfg):
     """remove display flash or 0
     """
     app.pimoroni_11x7.clear_and_write(message="")
 
-#--- Processing State ---------------------------------------------------------
+
+# --- Processing State ---------------------------------------------------------
 @pibooth.hookimpl
 def state_processing_enter(app, cfg):
     """Write smile blink to buffer
     """
     app.pimoroni_11x7.draw_buffer(smile_blink_grid)
-    
+
+
 @pibooth.hookimpl
 def state_processing_do(app, cfg):
     """Blink smile display
     """
-    app.pimoroni_11x7.blink_scroll_display(interval=0.5)
-    
+    app.pimoroni_11x7.scroll_display(interval=0.5, step=11)
+
+
 @pibooth.hookimpl
 def state_processing_exit(app, cfg):
     """Display heart
     """
     app.pimoroni_11x7.draw_buffer(heart_grid)
 
-#--- PrintView State ----------------------------------------------------------
+
+# --- PrintView State ----------------------------------------------------------
 @pibooth.hookimpl
 def state_print_enter(app, cfg):
     """Write print blink to buffer
     """
     app.pimoroni_11x7.draw_buffer(print_blink_grid)
 
+
 @pibooth.hookimpl
 def state_print_do(app, cfg):
     """Blink print display
     """
-    app.pimoroni_11x7.blink_scroll_display(interval=0.5)
+    app.pimoroni_11x7.scroll_display(interval=0.5, step=11)
 
-#--- Finish State -------------------------------------------------------------
+
+# --- Finish State -------------------------------------------------------------
 @pibooth.hookimpl
 def state_finish_enter(app, cfg):
     """Display heart
@@ -158,7 +174,7 @@ def state_finish_enter(app, cfg):
     app.pimoroni_11x7.draw_buffer(heart_grid)
 
 
-#--- Cleanup -------------------------------------------------------------
+# --- Cleanup -------------------------------------------------------------
 @pibooth.hookimpl
 def pibooth_cleanup(app):
     """reset display
@@ -171,6 +187,8 @@ def pibooth_cleanup(app):
 ###########################################################################
 # Class
 ###########################################################################
+
+
 class PiboothPimoroni11x7(Matrix11x7):
 
     def __init__(self, config=None):
@@ -180,7 +198,8 @@ class PiboothPimoroni11x7(Matrix11x7):
         self.config = config
         self._DISABLE = False
         self.check_ability_I2C()
-
+        self.thread_event_kill = threading.Event()
+        self.display_threading = None
         if self.check_enable():
             LOGGER.info("Plugin 'Pimoroni11x7' is enable")
         elif not self.check_enable():
@@ -198,11 +217,11 @@ class PiboothPimoroni11x7(Matrix11x7):
     def check_enable(self):
         """test if plugin is active and I2C able
         """
-        if self.config.getboolean('PIMORONI11x7', 'enable') and not self._DISABLE:      # enable and I2C able
+        if self.config.getboolean('PIMORONI11x7', 'enable') and not self._DISABLE:  # enable and I2C able
             return True
-        elif self._DISABLE:                                                             # I2C ERROR
+        elif self._DISABLE:  # I2C ERROR
             return False
-        elif not self.config.getboolean('PIMORONI11x7', 'enable'):                      # disable plugin
+        elif not self.config.getboolean('PIMORONI11x7', 'enable'):  # disable plugin
             self.clear()
             self.show()
             return False
@@ -217,30 +236,29 @@ class PiboothPimoroni11x7(Matrix11x7):
         :param message: message to display on buffer
         """
         if self.check_enable():
-            self.clear() # Clear the display buffer and reset scrolling to (0, 0)
+            self.clear()  # Clear the display buffer and reset scrolling to (0, 0)
             self.show()  # apply to led
             self.update_brightness()
             formatted_text = str(message).replace('"', '') + "   "
             self.write_string(formatted_text, font=font5x7)
 
-    def scroll_display(self, interval):
+    def run(self, interval, step):
+        while not self.thread_event.wait(interval):
+            pimoroni.show()
+            pimoroni.scroll(step)
+        self.thread_event.clear()
+
+    def scroll_display(self, interval=0.08, step=1):
         """scroll buffer to 1 led with sleep time
         :param interval: time to sleep between scroll
         """
         if self.check_enable():
-            self.show()
-            self.scroll()
-            sleep(interval)
+            if self.display_threading:
+                self.thread_event_kill.set()
+                self.display_threading.join()
 
-    def blink_scroll_display(self, interval):
-        """scroll buffer to 11 led with sleep time
-           use by own own buffer build
-        :param interval: time to sleep between scroll
-        """
-        if self.check_enable():
-            self.show()
-            self.scroll(11)
-            sleep(interval)
+            self.display_threading = threading.Thread(target=self.run, args=(self.thread_event, interval, step))
+            self.display_threading.start()
 
     def draw_buffer(self, grid):
         """add own grid to buffer and see
@@ -250,8 +268,8 @@ class PiboothPimoroni11x7(Matrix11x7):
             self.update_brightness()
             self.clear()
             self.show()
-            for x in range(0,len(grid[0])):
-                for y in range(0,len(grid)):
+            for x in range(0, len(grid[0])):
+                for y in range(0, len(grid)):
                     self.set_pixel(x, y, grid[y][x])
             self.show(grid)
 
@@ -264,20 +282,19 @@ class PiboothPimoroni11x7(Matrix11x7):
                 for y in range(0, 7):
                     self.pixel(x, y, 1)
             self.show()
- 
+
     def run_threading_count(self, countdown, preview_delay):
         """function call by 'preview_countdown' thread to display countdown
            :param countdown: the countdown timer
            :param preview_delay: the start delay countdown
         """
-        sleep(preview_delay-countdown)
+        sleep(preview_delay - countdown)
         self.clear()
         pos_x = 3
         if countdown == 1:
             pos_x = 4
         self.write_string(str(countdown), x=pos_x, y=0, font=font5x7)  # Write out your message
         self.show()
-        
 
     def preview_countdown(self):
         """Show a countdown of `timeout` seconds on the preview.
@@ -290,5 +307,3 @@ class PiboothPimoroni11x7(Matrix11x7):
             while countdown != 0:
                 threading.Timer(0, self.run_threading_count, [countdown, preview_delay]).start()
                 countdown -= 1
-
-
