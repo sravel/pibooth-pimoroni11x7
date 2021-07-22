@@ -26,6 +26,14 @@ heart_grid = [  [0,0,1,1,0,0,0,1,1,0,0],
                 [0,0,0,1,1,1,1,1,0,0,0],
                 [0,0,0,0,1,1,1,0,0,0,0],
                 [0,0,0,0,0,1,0,0,0,0,0]]
+                
+beating_heart_grid = [  [0,0,1,1,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,1,0,0],
+                        [0,1,1,1,1,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,0],
+                        [0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0],
+                        [0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0],
+                        [0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,0,0],
+                        [0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
+                        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0]]
 
 print_blink_grid = [
                 [0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -109,7 +117,8 @@ def state_capture_enter(app, cfg):
     if cfg.getboolean('WINDOW', 'flash'):
         app.pimoroni_11x7.flash()
     else:
-        app.pimoroni_11x7.clear_and_write(message="0")
+        # app.pimoroni_11x7.clear_and_write(message="0",pos_x=3, pos_y=0 )
+        app.pimoroni_11x7.draw_buffer(smile_blink_grid)
         app.pimoroni_11x7.scroll_display(interval=0)
 
 @pibooth.hookimpl
@@ -124,6 +133,7 @@ def state_processing_enter(app, cfg):
     """Write smile blink to buffer
     """
     app.pimoroni_11x7.draw_buffer(smile_blink_grid)
+    # app.pimoroni_11x7.blink_scroll_display(interval=0.5)
     
 @pibooth.hookimpl
 def state_processing_do(app, cfg):
@@ -212,16 +222,18 @@ class PiboothPimoroni11x7(Matrix11x7):
         """
         self.set_brightness(self.config.getfloat('PIMORONI11x7', 'brightness'))
 
-    def clear_and_write(self, message):
+    def clear_and_write(self, message, pos_x=0, pos_y=0):
         """Clear buffer and add new message
         :param message: message to display on buffer
+        :param pos_x: x start for display on buffer
+        :param pos_y: y start for display on buffer
         """
         if self.check_enable():
             self.clear() # Clear the display buffer and reset scrolling to (0, 0)
             self.show()  # apply to led
             self.update_brightness()
             formatted_text = str(message).replace('"', '') + "   "
-            self.write_string(formatted_text, font=font5x7)
+            self.write_string(formatted_text, x=pos_x, y=pos_y, font=font5x7)
 
     def scroll_display(self, interval):
         """scroll buffer to 1 led with sleep time
@@ -260,10 +272,12 @@ class PiboothPimoroni11x7(Matrix11x7):
         """
         if self.check_enable():
             self.clear()
+            self.set_brightness(1)
             for x in range(0, 11):
                 for y in range(0, 7):
                     self.pixel(x, y, 1)
             self.show()
+            self.update_brightness()
  
     def run_threading_count(self, countdown, preview_delay):
         """function call by 'preview_countdown' thread to display countdown
